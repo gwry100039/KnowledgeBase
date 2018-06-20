@@ -3,15 +3,15 @@ package com.example.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
-@RestController
+@Controller
 @SpringBootApplication
 public class DemoApplication {
 
     @RequestMapping("/")
-    public String index(){
-        return "Hello Spring Boot";
+    public String home(){
+        return "home";
     }
 
     public static void main(String[] args) {
