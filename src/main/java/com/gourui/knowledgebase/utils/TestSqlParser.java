@@ -49,6 +49,8 @@ public class TestSqlParser {
     }
 }
 
+//TODO 通过api找到create和insert的表名
+
 //if (statement instanceof SQLSelectStatement) {
 //        SQLSelect select = ((SQLSelectStatement) statement).getSelect();
 //        SQLSelectQueryBlock query = (SQLSelectQueryBlock) select.getQuery();

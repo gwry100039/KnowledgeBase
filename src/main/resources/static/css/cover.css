@@ -218,3 +218,11 @@ textarea {
 .list-group-item > .input-group {
     padding: 0px;
 }
+
+.list-group-item > .input-group > div.form-control {
+    width: 325px;
+}
+
+.list-group-item > .input-group > span.input-group-addon {
+    width: 42px;
+}

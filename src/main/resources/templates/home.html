@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8"/>
     <title>知识库</title>
-    <!--<link href="css/bootstrap.min.css" rel="stylesheet"/>-->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/cover.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/home.js"></script>
 </head>
 <body>
 
@@ -64,7 +64,7 @@
                 <textarea class="form-control" rows="5" id="comment"></textarea>
             </div>
 
-            <div class="input-group" style="display: block;">
+            <div class="input-group" style="display: block;" id="sql-textarea">
                 <div style="" class="sql-header">SQL语句</div>
                 <textarea style="" class="form-control sql-textarea" rows="20" id="comment"></textarea>
             </div>
@@ -73,7 +73,7 @@
             <!--<span class="input-group-addon drop-area">将sql文件拖拽到此区域</span>-->
             <!--</div>-->
 
-            <ul class="list-group">
+            <!--<ul class="list-group">
                 <li class="list-group-item">
                     <div class="input-group">
                         <div type="text" class="form-control" aria-describedby="basic-addon3">tableA, tableB</div>
@@ -95,7 +95,7 @@
                         <div type="text" class="form-control" aria-describedby="basic-addon3">tableC, tableD</div>
                     </div>
                 </li>
-            </ul>
+            </ul>-->
 
             <button type="button" class="btn btn-success">提交</button>
         </div>

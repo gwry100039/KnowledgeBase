@@ -4,8 +4,12 @@ import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.oracle.visitor.OracleSchemaStatVisitor;
 import com.alibaba.druid.sql.parser.ParserException;
+import com.alibaba.druid.stat.TableStat;
 import com.alibaba.druid.util.JdbcConstants;
+import com.sun.deploy.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +17,10 @@ public class OracleSqlParser {
     private String sql;
     private OracleSchemaStatVisitor visitor;
     private ExportTableAliasVisitor visitor1;
+    private List<Map<String, String>> aliasMapList;
+    private List<List<String>> tableListList;
+    private List<Map<String, String>> stMapList;
+    private List<String> simpleStStrList;
 
     public OracleSqlParser(String sql) {
         this.sql = sql;
@@ -23,6 +31,10 @@ public class OracleSqlParser {
         System.out.println(result); // 缺省大写格式
 
         List<SQLStatement> stmtList = null;
+        aliasMapList = new ArrayList<>();
+        tableListList = new ArrayList<>();
+        stMapList = new ArrayList<>();
+        simpleStStrList = new ArrayList<>();
         try {
             stmtList = SQLUtils.parseStatements(result, dbType);
             //解析出的独立语句的个数
@@ -33,17 +45,39 @@ public class OracleSqlParser {
 
                 visitor = new OracleSchemaStatVisitor();
                 stmt.accept(visitor);
-                //获取操作方法名称,依赖于表名称
-                System.out.println("Manipulation : " + visitor.getTables());
-                //获取字段名称
-                System.out.println("fields : " + visitor.getColumns());
-                //获取关联关系
-                System.out.println("relationship : " + visitor.getRelationships());
+
+                Map<String, String> sourceTargetTableMap = new HashMap<>();
+                String targetTableName = "";
+                //find target table name
+                for (Map.Entry<TableStat.Name, TableStat> entry : visitor.getTables().entrySet()) {
+                    String tableName = entry.getKey().getName();
+                    String type = entry.getValue().toString();
+                    if (type.equals("Create") || type.equals("Insert")) {
+                        targetTableName = tableName;
+                        break;
+                    }
+                }
+                //set map
+                List<String> sourceTableList = new ArrayList<>();
+                for (Map.Entry<TableStat.Name, TableStat> entry : visitor.getTables().entrySet()) {
+                    String tableName = entry.getKey().getName();
+                    String type = entry.getValue().toString();
+                    if ( ! (type.equals("Create") || type.equals("Insert")) ) {
+                        sourceTargetTableMap.put(tableName, targetTableName);
+                        sourceTableList.add(tableName);
+                    }
+                }
+                stMapList.add(sourceTargetTableMap);
+                //tablea,tableb=>tablec
+                simpleStStrList.add(StringUtils.join(sourceTableList,",") + "=>" + targetTableName);
 
                 visitor1 = new ExportTableAliasVisitor();
                 stmt.accept(visitor1);
                 System.out.println("aliasMap1 : " + visitor1.getAliasMap());
-                System.out.println("tablelist : " + visitor1.getTableList());
+                System.out.println("tableList : " + visitor1.getTableList());
+
+                aliasMapList.add(visitor1.getAliasMap());
+                tableListList.add(visitor1.getTableList());
             }
         } catch (ParserException e) {
             this.sql = null;
@@ -51,11 +85,19 @@ public class OracleSqlParser {
         }
     }
 
-    public Map<String, String> getAliasMap() {
-        return visitor1.getAliasMap();
+    public List<Map<String, String>> getAliasMapList() {
+        return aliasMapList;
     }
 
-    public List<String> getTableList() {
-        return visitor1.getTableList();
+    public List<List<String>> getTableListList() {
+        return tableListList;
+    }
+
+    public List<Map<String, String>> getStMapList() {
+        return stMapList;
+    }
+
+    public List<String> getSimpleStStrList() {
+        return simpleStStrList;
     }
 }

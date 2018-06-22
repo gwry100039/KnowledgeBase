@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class HomeController {
     @RequestMapping("/")
     public String home() {
-        return "home";
+        return "/home";
     }
 
     @RequestMapping("/getSqlAnalyzeResult")
     public String getSqlAnalyzeResult(@RequestParam("sql") String sql, Model model) {
         OracleSqlParser osp = new OracleSqlParser(sql);
-        return "SqlAnalyzeResult";
+        model.addAttribute("stMapList", osp.getStMapList());
+        return "/SqlAnalyzeResult";
     }
 }

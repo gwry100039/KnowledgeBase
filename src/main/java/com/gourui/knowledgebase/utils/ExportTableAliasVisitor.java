@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ExportTableAliasVisitor extends OracleASTVisitorAdapter {
 //    private Map<String, SQLTableSource> aliasMap = new HashMap<String, SQLTableSource>();
-    private Map<String, String> aliasMap = new HashMap<String, String>();
+    private Map<String, String> aliasMap = new HashMap<>();
     private List<String> tableList = new ArrayList<>();
 
     @Override

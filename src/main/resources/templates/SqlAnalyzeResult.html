@@ -1,0 +1,9 @@
+<ul th:each="stMap : ${stMapList}" class="list-group">
+    <li th:each="entry : ${stMap}" class="list-group-item">
+        <div class="input-group">
+            <div type="text" class="form-control" aria-describedby="basic-addon3" th:text="${entry.key}"></div>
+            <span class="input-group-addon" id="basic-addon3">=></span>
+            <div type="text" class="form-control" aria-describedby="basic-addon3" th:text="${entry.value}"></div>
+        </div>
+    </li>
+</ul>
