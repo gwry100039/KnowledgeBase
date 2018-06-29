@@ -10,42 +10,66 @@ import com.alibaba.druid.util.JdbcConstants;
 
 public class TestSqlParser {
     public static void main(String[] args) {
-//        String sql = "insert into instable select a,'sadasdsa',dsadas b ,c from testtable" +
-//                " a left join tableb b on a.t = b.t ";
-        String sql = "Create table  instable compress  as select a.name,'sadasdsa',b.dsadas b ,b.c from testtable" +
-                " a left join tableb b on a.t = b.t " +
-                " where a.c = b.c";
-        String dbType = JdbcConstants.ORACLE;
 
-        //格式化输出
-        String result = SQLUtils.format(sql, dbType);
-        System.out.println(result); // 缺省大写格式
+/*
+create table dasfsdaf as select a.aaa,b.bbb,ccc from tablesa a
+left join tableb b on a.aaa=b.bbb
+where a.aaa=b.bbb;
 
-        List<SQLStatement> stmtList = null;
-        try {
-            stmtList = SQLUtils.parseStatements(sql, dbType);
-            //解析出的独立语句的个数
-            System.out.println("size is:" + stmtList.size());
-            for (int i = 0; i < stmtList.size(); i++) {
+INSERT INTO MKTG_H_EXEC_RESULT_FACT
+(THE_DATE, AREA_ID, SCENE_ID, PID_TEST, MKTG_CNT, MKTG_SUC_CNT
+, TASK_CNT, TASK_F_CNT, TASK_F_SUC_CNT, CON_CNT, CON_SUC_CNT, CONSTANT)
+SELECT TRUNC(SYSDATE) AS columna , T1.AREA_ID
+, RTRIM(TO_CHAR(T2.PID))
+, case when t2.pid='1' then t1.area_id else t2.pid end
+, SUM(T1.MKTG_CNT), SUM(T1.MKTG_SUC_CNT)  AS columnb
+, SUM(T1.TASK_CNT), SUM(T1.TASK_F_CNT)
+, SUM(T1.TASK_F_SUC_CNT), SUM(T1.CON_CNT)
+, SUM(T1.CON_SUC_CNT)
+, 'CONSTANT'
+FROM MKTG_H_EXEC_SOURCE T1, DMN_MKTG_PLAN_TYPE T2
+WHERE T1.THE_DATE = TRUNC(SYSDATE)
+AND T1.SCENE_ID = T2.SCENE_ID
+GROUP BY T1.AREA_ID, RTRIM(TO_CHAR(T2.PID));
 
-                SQLStatement stmt = stmtList.get(i);
-                OracleSchemaStatVisitor visitor = new OracleSchemaStatVisitor();
-                ExportTableAliasVisitor visitor1 = new ExportTableAliasVisitor();
-                stmt.accept(visitor);
-                stmt.accept(visitor1);
-                //获取操作方法名称,依赖于表名称
-                System.out.println("Manipulation : " + visitor.getTables());
-                //获取字段名称
-                System.out.println("fields : " + visitor.getColumns());
-                //获取关联关系
-                System.out.println("relationship : " + visitor.getRelationships());
+CREATE TABLE MKTG_H_EXEC_RESULT_FACT AS
+SELECT TRUNC(SYSDATE) AS THE_DATE , T1.AREA_ID
+, RTRIM(TO_CHAR(T2.PID)) SCENE_ID
+, case when t2.pid='1' then t1.area_id else t2.pid end PID_TEST
+, SUM(T1.MKTG_CNT) MKTG_CNT
+, SUM(T1.MKTG_SUC_CNT)  AS MKTG_SUC_CNT
+, SUM(T1.TASK_CNT) TASK_CNT
+, SUM(T1.TASK_F_CNT) TASK_F_CNT
+, SUM(T1.TASK_F_SUC_CNT) (T1.TASK_F_SUC_CNT)
+, SUM(T1.CON_CNT) CON_CNT
+, SUM(T1.CON_SUC_CNT) CON_SUC_CNT
+, 'CONSTANT' CONSTANT
+FROM MKTG_H_EXEC_SOURCE T1, DMN_MKTG_PLAN_TYPE T2
+WHERE T1.THE_DATE = TRUNC(SYSDATE)
+AND T1.SCENE_ID = T2.SCENE_ID
+GROUP BY T1.AREA_ID, RTRIM(TO_CHAR(T2.PID));
 
-                System.out.println("aliasMap1 : " + visitor1.getAliasMap());
-                System.out.println("tablelist : " + visitor1.getTableList());
-            }
-        } catch (ParserException e) {
-            System.err.println(e.getMessage());
-        }
+create table  instable compress  as select a.name,'sadasdsa',b.dsadas b ,b.c from testtable
+a left join tableb b on a.t = b.t
+where a.c = b.c;
+ */
+        String sql = "CREATE TABLE MKTG_H_EXEC_RESULT_FACT AS\n" +
+                "SELECT TRUNC(SYSDATE) AS THE_DATE , T1.AREA_ID\n" +
+                ", RTRIM(TO_CHAR(T2.PID)) SCENE_ID\n" +
+                ", case when t2.pid='1' then t1.area_id else t2.pid end PID_TEST\n" +
+                ", SUM(T1.MKTG_CNT) MKTG_CNT\n" +
+                ", SUM(T1.MKTG_SUC_CNT)  AS MKTG_SUC_CNT\n" +
+                ", SUM(T1.TASK_CNT) TASK_CNT\n" +
+                ", SUM(T1.TASK_F_CNT) TASK_F_CNT\n" +
+                ", SUM(T1.TASK_F_SUC_CNT) TASK_F_SUC_CNT\n" +
+                ", SUM(T1.CON_CNT) CON_CNT\n" +
+                ", SUM(T1.CON_SUC_CNT) CON_SUC_CNT\n" +
+                ", 'CONSTANT' CONSTANT\n" +
+                "FROM MKTG_H_EXEC_SOURCE T1, DMN_MKTG_PLAN_TYPE T2\n" +
+                "WHERE T1.THE_DATE = TRUNC(SYSDATE)\n" +
+                "AND T1.SCENE_ID = T2.SCENE_ID\n" +
+                "GROUP BY T1.AREA_ID, RTRIM(TO_CHAR(T2.PID));";
+        OracleSqlParser osp = new OracleSqlParser(sql);
     }
 }
 
