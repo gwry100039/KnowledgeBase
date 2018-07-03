@@ -31,12 +31,12 @@
 
             <div class="input-group">
                 <span class="input-group-addon" >需求编号</span>
-                <input type="text" class="form-control" aria-describedby="basic-addon1">
+                <input type="text" class="form-control" aria-describedby="basic-addon1" id="requirement-id">
             </div>
 
             <div class="input-group">
                 <span class="input-group-addon" >需求名称</span>
-                <input type="text" class="form-control" aria-describedby="basic-addon1">
+                <input type="text" class="form-control" aria-describedby="basic-addon1" id="requirement-name">
             </div>
 
             <div class="input-group">
@@ -47,6 +47,11 @@
                     <option>万友辰</option>
                     <option>彭雪阳</option>
                 </select>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon" >取数人员</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" id="extractor-name">
             </div>
 
             <div class="input-group">
@@ -66,7 +71,7 @@
 
             <div class="input-group" style="display: block;" id="sql-textarea">
                 <div style="" class="sql-header">SQL语句</div>
-                <textarea class="form-control sql-textarea" rows="20" id="sql"></textarea>
+                <textarea class="form-control sql-textarea" rows="20" id="sql-statement"></textarea>
             </div>
 
             <!--<div class="input-group">-->
