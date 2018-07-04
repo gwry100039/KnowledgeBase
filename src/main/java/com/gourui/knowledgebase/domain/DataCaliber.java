@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class DataCaliber implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private String uuid;
 
     private String requirementId;
 
@@ -18,16 +18,16 @@ public class DataCaliber implements Serializable {
 
     private String departmentName;
 
-    private String comment;
+    private String comments;
 
     private String sql;
 
-    public Long getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getRequirementId() {
@@ -70,12 +70,12 @@ public class DataCaliber implements Serializable {
         this.departmentName = departmentName;
     }
 
-    public String getComment() {
-        return comment;
+    public String getComments() {
+        return comments;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public String getSql() {

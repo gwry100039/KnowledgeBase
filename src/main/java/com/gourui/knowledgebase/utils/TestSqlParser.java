@@ -40,7 +40,7 @@ SELECT TRUNC(SYSDATE) AS THE_DATE , T1.AREA_ID
 , SUM(T1.MKTG_SUC_CNT)  AS MKTG_SUC_CNT
 , SUM(T1.TASK_CNT) TASK_CNT
 , SUM(T1.TASK_F_CNT) TASK_F_CNT
-, SUM(T1.TASK_F_SUC_CNT) (T1.TASK_F_SUC_CNT)
+, SUM(T1.TASK_F_SUC_CNT) TASK_F_SUC_CNT
 , SUM(T1.CON_CNT) CON_CNT
 , SUM(T1.CON_SUC_CNT) CON_SUC_CNT
 , 'CONSTANT' CONSTANT
@@ -52,6 +52,8 @@ GROUP BY T1.AREA_ID, RTRIM(TO_CHAR(T2.PID));
 create table  instable compress  as select a.name,'sadasdsa',b.dsadas b ,b.c from testtable
 a left join tableb b on a.t = b.t
 where a.c = b.c;
+
+TODO 今后需要加入子查询的识别  以及  With子句的识别
  */
         String sql = "CREATE TABLE MKTG_H_EXEC_RESULT_FACT AS\n" +
                 "SELECT TRUNC(SYSDATE) AS THE_DATE , T1.AREA_ID\n" +
@@ -72,18 +74,6 @@ where a.c = b.c;
         OracleSqlParser osp = new OracleSqlParser(sql);
     }
 }
-
-//TODO 通过api找到create和insert的表名
-
-//if (statement instanceof SQLSelectStatement) {
-//        SQLSelect select = ((SQLSelectStatement) statement).getSelect();
-//        SQLSelectQueryBlock query = (SQLSelectQueryBlock) select.getQuery();
-//        System.out.println(query.getSelectList());//这里打印的就是name，age
-//        if(query.getFrom() instanceof SQLSubqueryTableSource){
-//        SQLSubqueryTableSource ssts = (SQLSubqueryTableSource)query.getFrom();
-//        MySqlSelectQueryBlock mssqb = (MySqlSelectQueryBlock) ssts.getSelect().getQuery();
-//        System.out.println(mssqb.getSelectList());//这里打印的就是子查询的*
-//        }
 
 
 //api文档查看  http://tool.oschina.net/apidocs/apidoc?api=druid0.26
