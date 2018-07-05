@@ -4,9 +4,7 @@ import com.google.common.graph.ElementOrder;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class GraphTestMain {
@@ -27,27 +25,54 @@ public class GraphTestMain {
         graph.putEdgeValue("F", "H", 13);
 
 
-        Set<String> notVisitedNodes = new HashSet<>(graph.nodes());
-        Set<String> successors = graph.successors(D);
-        List<Set<String>> succList = new ArrayList<>();
-        succList.add(successors);
-        while ( succList.size() > 0 ) {
-            for (String successor : succList.get(0)) {
-                System.out.println(successor);
-                Set<String> successorsA = graph.successors(successor);
-                if(successorsA.size() > 0) {
-                    succList.add(successorsA);
-                }
-            }
-            succList.remove(0);
+        Set<String> successors = getAllAccessibleSuccessors("C",graph);
+        for (String successor : successors) {
+            System.out.println(successor);
         }
 
-//        Set<String> predecessors = graph.predecessors(D);
-//        for (String predecessor : predecessors) {
-//            System.out.println(predecessor);
-//        }
+        Set<String> predecessors = getAllAccessiblePredecessors("E",graph);
+        for (String predecessor : predecessors) {
+            System.out.println(predecessor);
+        }
+    }
 
-        graph.edges();
-        graph.nodes();
+    public static <T, N> Set<T> getAllAccessibleSuccessors(T node, MutableValueGraph<T, N> graph) {
+        Set<T> notVisitedNodes = new HashSet<>(graph.nodes());
+        Set<T> accessibleSuccessors = new HashSet<>();
+        //递归入口
+        findSuccessorsByOneNode(node, graph, notVisitedNodes, accessibleSuccessors);
+        return accessibleSuccessors;
+    }
+
+    private static <T, N> void findSuccessorsByOneNode(T node, MutableValueGraph<T, N> graph, Set<T> notVisitedNodes, Set<T> accessibleSuccessors) {
+        Set<T> successors = graph.successors(node);
+        for ( T successor : successors) {
+            if (notVisitedNodes.contains(successor)){
+                accessibleSuccessors.add(successor);
+                notVisitedNodes.remove(successor);
+                //递归寻找所有的可达节点
+                findSuccessorsByOneNode(successor, graph, notVisitedNodes, accessibleSuccessors);
+            }
+        }
+    }
+
+    public static <T, N> Set<T> getAllAccessiblePredecessors(T node, MutableValueGraph<T, N> graph) {
+        Set<T> notVisitedNodes = new HashSet<>(graph.nodes());
+        Set<T> accessiblePredecessors = new HashSet<>();
+        //递归入口
+        findPredecessorsByOneNode(node, graph, notVisitedNodes, accessiblePredecessors);
+        return accessiblePredecessors;
+    }
+
+    private static <T, N> void findPredecessorsByOneNode(T node, MutableValueGraph<T, N> graph, Set<T> notVisitedNodes, Set<T> accessiblePredecessors) {
+        Set<T> predecessors = graph.predecessors(node);
+        for ( T predecessor : predecessors) {
+            if (notVisitedNodes.contains(predecessor)){
+                accessiblePredecessors.add(predecessor);
+                notVisitedNodes.remove(predecessor);
+                //递归寻找所有的可达节点
+                findPredecessorsByOneNode(predecessor, graph, notVisitedNodes, accessiblePredecessors);
+            }
+        }
     }
 }
