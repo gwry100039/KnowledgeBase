@@ -26,14 +26,12 @@ public class GraphTestMain {
 
 
         Set<String> successors = getAllAccessibleSuccessors("C",graph);
-        for (String successor : successors) {
-            System.out.println(successor);
-        }
+        System.out.println("C节点的所有后继节点：");
+        System.out.println(successors);
 
         Set<String> predecessors = getAllAccessiblePredecessors("E",graph);
-        for (String predecessor : predecessors) {
-            System.out.println(predecessor);
-        }
+        System.out.println("E节点的所有前驱节点：");
+        System.out.println(predecessors);
     }
 
     public static <T, N> Set<T> getAllAccessibleSuccessors(T node, MutableValueGraph<T, N> graph) {
@@ -74,5 +72,25 @@ public class GraphTestMain {
                 findPredecessorsByOneNode(predecessor, graph, notVisitedNodes, accessiblePredecessors);
             }
         }
+    }
+
+    private static <T, N> Set<T> getStartNodes(MutableValueGraph<T, N> graph) {
+        Set<T> startNodes = new HashSet<>();
+        for(T node : graph.nodes()) {
+            if(graph.inDegree(node) == 0) { //入度为0
+                startNodes.add(node);
+            }
+        }
+        return startNodes;
+    }
+
+    private static <T, N> Set<T> getEndNodes(MutableValueGraph<T, N> graph) {
+        Set<T> endNodes = new HashSet<>();
+        for(T node : graph.nodes()) {
+            if(graph.outDegree(node) == 0) { //出度为0
+                endNodes.add(node);
+            }
+        }
+        return endNodes;
     }
 }
