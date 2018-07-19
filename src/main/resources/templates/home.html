@@ -5,8 +5,14 @@
     <title>知识库</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/cover.css" rel="stylesheet">
+    <link href="/css/chosen.css" rel="stylesheet">
+    <link href="/css/bootstrap-formhelpers.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
+            integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i"
+            crossorigin="anonymous"></script>
+    <script src="/js/bootstrap-formhelpers.js"></script>
     <script src="/js/home.js"></script>
 </head>
 <body>
@@ -27,7 +33,7 @@
                 </nav>
             </div>
         </div>
-        <form action="/saveDataCaliber">
+        <form action="/saveDataCaliber" method="post">
             <div class="form-group">
 
                 <div class="input-group">
@@ -42,37 +48,55 @@
 
                 <div class="input-group">
                     <span class="input-group-addon">提数人员</span>
-                    <select class="form-control" name="worker_name">
-                        <option>苟瑞</option>
-                        <option>委中原</option>
-                        <option>万友辰</option>
-                        <option>彭雪阳</option>
-                    </select>
+                    <div class="bfh-selectbox" data-name="worker_name" data-filter="true">
+                        <div th:each="worker : ${workerList}" th:data-value="${worker.name}" th:text="${worker.name}" ></div>
+                        <!--<div th:value="" data-value="苟瑞">苟瑞</div>
+                        <div data-value="委中原">委中原</div>
+                        <div data-value="万友辰">万友辰</div>
+                        <div data-value="彭雪阳">彭雪阳</div>
+                        <div data-value="5">Option 5</div>
+                        <div data-value="6">Option 6</div>
+                        <div data-value="7">Option 7</div>
+                        <div data-value="8">Option 8</div>
+                        <div data-value="9">Option 9</div>
+                        <div data-value="10">Option 10</div>
+                        <div data-value="11">Option 11</div>
+                        <div data-value="12">Option 12</div>
+                        <div data-value="13">Option 13</div>
+                        <div data-value="14">Option 14</div>
+                        <div data-value="15">Option 15</div>-->
+                    </div>
                 </div>
 
                 <div class="input-group">
                     <span class="input-group-addon">取数人员</span>
-                    <input type="text" class="form-control" aria-describedby="basic-addon1" name="extractor_name">
+                    <input type="text" class="form-control" placeholder="用于追溯数据出口" aria-describedby="basic-addon1"
+                           name="extractor_name">
                 </div>
 
                 <div class="input-group">
                     <span class="input-group-addon">部门名称</span>
-                    <!--<input type="text" class="form-control" aria-describedby="basic-addon1">-->
-                    <select class="form-control" name="department_name">
-                        <option>风险管理部</option>
-                        <option>个人业务部</option>
-                        <option>会计结算部</option>
-                    </select>
+                    <div class="bfh-selectbox" data-name="department_name" data-value="" data-filter="true">
+                        <div th:each="org : ${orgList}" th:data-value="${org.name}" th:text="${org.name}" ></div>
+                        <!--<div data-value="风险管理部">风险管理部</div>
+                        <div data-value="个人业务部">个人业务部</div>
+                        <div data-value="会计结算部">会计结算部</div>-->
+                    </div>
                 </div>
 
                 <div class="input-group">
-                    <span class="input-group-addon">口径描述</span>
-                    <textarea class="form-control" rows="5" name="comments"></textarea>
+                    <span class="input-group-addon">业务需求描述</span>
+                    <textarea class="form-control" placeholder="业务针对需求的描述" rows="5" name="requirement_desc"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon">技术口径描述</span>
+                    <textarea class="form-control" placeholder="提数人员通过理解需求后得到的口径描述" rows="5" name="comments"></textarea>
                 </div>
 
                 <div class="input-group" style="display: block;" id="sql-textarea">
                     <div style="" class="sql-header">SQL语句</div>
-                    <textarea class="form-control sql-textarea" rows="20" name="sql"></textarea>
+                    <textarea class="form-control sql-textarea" placeholder="提数的执行SQL" rows="20" name="sql"></textarea>
                 </div>
 
                 <!--<div class="input-group">-->

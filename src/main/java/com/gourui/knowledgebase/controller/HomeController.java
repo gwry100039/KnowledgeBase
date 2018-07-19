@@ -1,6 +1,8 @@
 package com.gourui.knowledgebase.controller;
 
 import com.gourui.knowledgebase.mapper.DataCaliberMapper;
+import com.gourui.knowledgebase.mapper.OrgMapper;
+import com.gourui.knowledgebase.mapper.WorkerMapper;
 import com.gourui.knowledgebase.utils.OracleSqlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +19,16 @@ public class HomeController {
     @Autowired
     private DataCaliberMapper dataCaliberMapper;
 
+    @Autowired
+    private OrgMapper orgMapper;
+
+    @Autowired
+    private WorkerMapper workerMapper;
+
     @RequestMapping("/")
-    public String home() {
+    public String home(Model model) {
+        model.addAttribute("orgList", orgMapper.selectList());
+        model.addAttribute("workerList", workerMapper.selectList());
         return "/home";
     }
 
@@ -36,6 +46,7 @@ public class HomeController {
             @RequestParam("worker_name") String worker_name,
             @RequestParam("extractor_name") String extractor_name,
             @RequestParam("department_name") String department_name,
+            @RequestParam("requirement_desc") String requirement_desc,
             @RequestParam("comments") String comments,
             @RequestParam("sql") String sql) {
         /*System.out.println(requirement_id);
@@ -49,7 +60,7 @@ public class HomeController {
         DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         String strDate2 = dtf2.format(LocalDateTime.now());
 
-        dataCaliberMapper.add(strDate2,requirement_id,requirement_name,worker_name,extractor_name,department_name,comments,sql);
+        dataCaliberMapper.add(strDate2, requirement_id, requirement_name, worker_name, extractor_name, department_name, requirement_desc, comments, sql);
         return "/home";
     }
 }
