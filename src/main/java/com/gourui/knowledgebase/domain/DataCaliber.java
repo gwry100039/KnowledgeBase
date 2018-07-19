@@ -18,6 +18,8 @@ public class DataCaliber implements Serializable {
 
     private String departmentName;
 
+    private String requirementDesc;
+
     private String comments;
 
     private String sql;
@@ -68,6 +70,14 @@ public class DataCaliber implements Serializable {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public String getRequirementDesc() {
+        return requirementDesc;
+    }
+
+    public void setRequirementDesc(String requirementDesc) {
+        this.requirementDesc = requirementDesc;
     }
 
     public String getComments() {
