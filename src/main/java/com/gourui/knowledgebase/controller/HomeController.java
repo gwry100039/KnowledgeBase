@@ -3,7 +3,7 @@ package com.gourui.knowledgebase.controller;
 import com.gourui.knowledgebase.mapper.DataCaliberMapper;
 import com.gourui.knowledgebase.mapper.OrgMapper;
 import com.gourui.knowledgebase.mapper.WorkerMapper;
-import com.gourui.knowledgebase.utils.OracleSqlParser;
+import com.gourui.knowledgebase.utils.sqlparser.OracleSqlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,8 +35,14 @@ public class HomeController {
     @RequestMapping("/getSqlAnalyzeResult")
     public String getSqlAnalyzeResult(@RequestParam("sql") String sql, Model model) {
         OracleSqlParser osp = new OracleSqlParser(sql);
-        model.addAttribute("stMapList", osp.getStMapList());
-        return "/SqlAnalyzeResult";
+        int result = osp.init();
+        if (result >= 0) {
+            model.addAttribute("stMapList", osp.getStMapList());
+            return "/SqlAnalyzeResult";
+        }
+        else {
+            model.addAttribute("parseErrorMsg", osp.getParseErrorMsg());
+        }
     }
 
     @RequestMapping("/saveDataCaliber")

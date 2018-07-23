@@ -1,12 +1,6 @@
 package com.gourui.knowledgebase.utils;
 
-import java.util.List;
-
-import com.alibaba.druid.sql.SQLUtils;
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleSchemaStatVisitor;
-import com.alibaba.druid.sql.parser.ParserException;
-import com.alibaba.druid.util.JdbcConstants;
+import com.gourui.knowledgebase.utils.sqlparser.OracleSqlParser;
 
 public class TestSqlParser {
     public static void main(String[] args) {
