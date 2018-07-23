@@ -70,9 +70,6 @@ public class OracleSqlParser {
         }
     }
 
-    public static
-
-
     private Map<String, String> initStMapList(SQLStatement stmt) {
         visitor = new OracleSchemaStatVisitor();
         stmt.accept(visitor);
