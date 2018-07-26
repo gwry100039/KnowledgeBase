@@ -8,6 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface OrgMapper {
-    @Select("select id,name from org")
+    @Select("select id,name from p_org")
     List<Org> selectList();
 }

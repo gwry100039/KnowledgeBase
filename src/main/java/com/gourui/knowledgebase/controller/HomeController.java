@@ -29,20 +29,16 @@ public class HomeController {
     public String home(Model model) {
         model.addAttribute("orgList", orgMapper.selectList());
         model.addAttribute("workerList", workerMapper.selectList());
+        model.addAttribute("dataCaliberList", dataCaliberMapper.selectList());
         return "/home";
     }
 
     @RequestMapping("/getSqlAnalyzeResult")
     public String getSqlAnalyzeResult(@RequestParam("sql") String sql, Model model) {
         OracleSqlParser osp = new OracleSqlParser(sql);
-        int result = osp.init();
-        if (result >= 0) {
-            model.addAttribute("stMapList", osp.getStMapList());
-            return "/SqlAnalyzeResult";
-        }
-        else {
-            model.addAttribute("parseErrorMsg", osp.getParseErrorMsg());
-        }
+        osp.init();
+        model.addAttribute("stMapList", osp.getStMapList());
+        return "ajax/SqlAnalyzeResult";
     }
 
     @RequestMapping("/saveDataCaliber")
@@ -67,6 +63,6 @@ public class HomeController {
         String strDate2 = dtf2.format(LocalDateTime.now());
 
         dataCaliberMapper.add(strDate2, requirement_id, requirement_name, worker_name, extractor_name, department_name, requirement_desc, comments, sql);
-        return "/home";
+        return "redirect:/";
     }
 }

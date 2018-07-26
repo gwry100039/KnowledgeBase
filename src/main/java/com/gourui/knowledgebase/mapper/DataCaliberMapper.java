@@ -1,8 +1,13 @@
 package com.gourui.knowledgebase.mapper;
 
+import com.gourui.knowledgebase.domain.DataCaliber;
+import com.gourui.knowledgebase.domain.Org;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface DataCaliberMapper {
@@ -17,4 +22,15 @@ public interface DataCaliberMapper {
             @Param("requirement_desc") String requirement_desc,
             @Param("comments")String comments,
             @Param("sql")String sql);
+
+    @Select("select uuid," +
+            "requirement_id as requirementId," +
+            "requirement_name as requirementName," +
+            "worker_name workerName," +
+            "extractor_name extractorName," +
+            "department_name departmentName," +
+            "requirement_desc requirementDesc," +
+            "comments," +
+            "sql from Data_Caliber where rownum <= 5")
+    List<DataCaliber> selectList();
 }

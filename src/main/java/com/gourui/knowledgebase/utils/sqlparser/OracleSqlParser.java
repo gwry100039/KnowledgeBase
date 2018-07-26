@@ -22,6 +22,7 @@ public class OracleSqlParser {
     private String parseErrorMsg;
 
     private String sql;
+    private List<SQLStatement> stmtList;
     private OracleSchemaStatVisitor visitor;
     private ExportTableAliasVisitor visitor1;
     private List<Map<String, String>> aliasMapList;
@@ -31,42 +32,34 @@ public class OracleSqlParser {
 
     public OracleSqlParser(String sql) {
         this.sql = sql;
-    }
 
-    public int init() {
         String dbType = JdbcConstants.ORACLE;
 
         //格式化输出
         String result = SQLUtils.format(sql, dbType);
         System.out.println(result); // 缺省大写格式
 
-        List<SQLStatement> stmtList = null;
+        stmtList = null;
         aliasMapList = new ArrayList<>();
         tableListList = new ArrayList<>();
         stMapList = new ArrayList<>();
         simpleStStrList = new ArrayList<>();
-        try {
-            stmtList = SQLUtils.parseStatements(result, dbType);
-            //解析出的独立语句的个数
-            System.out.println("size is:" + stmtList.size());
-            for (int i = 0; i < stmtList.size(); i++) {
 
-                SQLStatement stmt = stmtList.get(i);
+        stmtList = SQLUtils.parseStatements(result, dbType);
+        //解析出的独立语句的个数
+        System.out.println("size is:" + stmtList.size());
+    }
 
-                stMapList.add(initStMapList(stmt));
-                Map<String, String> aliasMap = initAliasMap(stmt);
-                aliasMapList.add(aliasMap);
-                if (stmt instanceof SQLInsertStatement)
-                    initColumnMap((SQLInsertStatement) stmt, aliasMap);
-                if (stmt instanceof SQLCreateTableStatement)
-                    initColumnMap((SQLCreateTableStatement) stmt, aliasMap);
-            }
-
-            return stmtList.size();
-        } catch (ParserException e) {
-            parseErrorMsg = e.getMessage();
-            System.err.println(e.getMessage());
-            return -1;
+    public void init() {
+        for (int i = 0; i < stmtList.size(); i++) {
+            SQLStatement stmt = stmtList.get(i);
+            stMapList.add(initStMapList(stmt));
+            Map<String, String> aliasMap = initAliasMap(stmt);
+            aliasMapList.add(aliasMap);
+            if (stmt instanceof SQLInsertStatement)
+                initColumnMap((SQLInsertStatement) stmt, aliasMap);
+            if (stmt instanceof SQLCreateTableStatement)
+                initColumnMap((SQLCreateTableStatement) stmt, aliasMap);
         }
     }
 

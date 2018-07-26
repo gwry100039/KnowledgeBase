@@ -8,6 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface WorkerMapper {
-    @Select("select id,name from workers")
+    @Select("select id,name from p_workers")
     List<Worker> selectList();
 }
