@@ -15,9 +15,9 @@ $(document).ready(function () {
     });
 
     //提交表单
-    $('button.btn.btn-primary').click(function(e){
+    $('button.btn.btn-primary').click(function (e) {
         $('button.btn.btn-success').attr('disabled', true);
-        for(x in $('input[name]')) {
+        for (x in $('input[name]')) {
             console.log(x);
         }
         $.post("/getSqlAnalyzeResult", {sql: $("#sql-textarea > textarea").val()}, function (result) {
@@ -30,7 +30,24 @@ $(document).ready(function () {
     });
 
     //取消录入
-    $('button.btn.btn-default').click(function(e){
-        $('#data-caliber-form').slideUp();
+    $('button.btn.btn-default').click(function (e) {
+        $('#data-caliber-form').slideUp(function () {
+            $("#initial-input").css("display","block");
+            $("#initial-input").animate({
+                "opacity": "1"
+            }, 500);
+        });
     });
+
+    $('#initial-input').focus(function (e) {
+        $("#initial-input").animate({
+            "opacity": "0"
+        }, 500);
+        $("#initial-input").css("display","none");
+        // $('#initial-input').parent().parent().hide(function () {
+            $('#data-caliber-form').slideDown();
+        // });
+    });
+
+
 });
