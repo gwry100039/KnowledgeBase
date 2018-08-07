@@ -134,7 +134,7 @@
 
         <div th:each="dataCaliber : ${dataCaliberList}" class="panel panel-primary">
             <!-- Default panel contents -->
-            <div class="panel-heading"><a href="#" th:text="|${dataCaliber.requirementId} ${dataCaliber.requirementName}|"></a></div>
+            <div class="panel-heading"><a th:href="@{/requirement/{requirementId}(requirementId=${dataCaliber.requirementId})}" th:text="|${dataCaliber.requirementId} ${dataCaliber.requirementName}|"></a></div>
             <div class="panel-body">
                 <p th:text="${dataCaliber.requirementDesc}"></p>
             </div>
@@ -146,7 +146,7 @@
 
         <div class="mastfoot">
             <div class="inner">
-                <p>Develop by GouRui@Data Management Center.</p>
+                <p>Developed by GouRui@Data Management Center.</p>
             </div>
         </div>
 

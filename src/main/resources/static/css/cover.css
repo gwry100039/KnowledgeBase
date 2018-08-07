@@ -244,3 +244,7 @@ div.panel>.panel-heading {
 .panel.panel-primary a {
     color: #fff;
 }
+
+.panel-body p {
+    white-space: pre-wrap;
+}
