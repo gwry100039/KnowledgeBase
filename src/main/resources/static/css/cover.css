@@ -165,7 +165,7 @@ body {
     .masthead,
     .mastfoot,
     .cover-container {
-        width: 700px;
+        width: 778px;
     }
 }
 
@@ -247,4 +247,10 @@ div.panel>.panel-heading {
 
 .panel-body p {
     white-space: pre-wrap;
+}
+
+.error-input {
+    /*background-image: linear-gradient(to top, #ec4d2e, #ff1e34 6px);*/
+    border-image: linear-gradient(to right, #ec4d2e, #ff1e34) 1 1;
+    border-width: 4px;
 }

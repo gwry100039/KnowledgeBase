@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>知识库</title>
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/cover.css" rel="stylesheet">
-    <link href="/css/bootstrap-formhelpers.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
-            integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i"
-            crossorigin="anonymous"></script>
-    <script src="/js/bootstrap-formhelpers.js"></script>
-    <script src="/js/home.js"></script>
+<head th:replace="header :: header">
 </head>
 <body>
 
@@ -25,8 +13,9 @@
                 <h3 class="masthead-brand">DMC KnowledgeBase</h3>
                 <nav>
                     <ul class="nav masthead-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#">Data Process</a></li>
+                        <li><a href="#">Home</a></li>
+                        <li class="active"><a href="/requirements">Requirement Input</a></li>
+                        <!--<li><a href="#">Data Process</a></li>-->
                         <li><a href="#">System Maintenance</a></li>
                     </ul>
                 </nav>
@@ -53,7 +42,7 @@
 
                 <div class="input-group">
                     <span class="input-group-addon">提数人员</span>
-                    <div class="bfh-selectbox" data-name="worker_name" data-filter="true">
+                    <div class="bfh-selectbox" data-name="worker_name" data-filter="true" th:data-value="${workerList[0].name}">
                         <div th:each="worker : ${workerList}" th:data-value="${worker.name}"
                              th:text="${worker.name}"></div>
                         <!--<div th:value="" data-value="苟瑞">苟瑞</div>
@@ -82,7 +71,7 @@
 
                 <div class="input-group">
                     <span class="input-group-addon">部门名称</span>
-                    <div class="bfh-selectbox" data-name="department_name" data-value="" data-filter="true">
+                    <div class="bfh-selectbox" data-name="department_name" data-value="" data-filter="true" th:data-value="${orgList[0].name}">
                         <div th:each="org : ${orgList}" th:data-value="${org.name}" th:text="${org.name}"></div>
                         <!--<div data-value="风险管理部">风险管理部</div>
                         <div data-value="个人业务部">个人业务部</div>
@@ -152,11 +141,7 @@
             </ul>
         </div>
 
-        <div class="mastfoot">
-            <div class="inner">
-                <p>Developed by GouRui@Data Management Center.</p>
-            </div>
-        </div>
+        <div th:replace="footer :: footer"></div>
 
     </div>
 

@@ -25,12 +25,12 @@ public class HomeController {
     @Autowired
     private WorkerMapper workerMapper;
 
-    @RequestMapping("/")
-    public String home(Model model) {
+    @RequestMapping("/requirements")
+    public String requirementInput(Model model) {
         model.addAttribute("orgList", orgMapper.selectList());
         model.addAttribute("workerList", workerMapper.selectList());
         model.addAttribute("dataCaliberList", dataCaliberMapper.selectList());
-        return "/home";
+        return "/RequirementInput";
     }
 
     @RequestMapping("/getSqlAnalyzeResult")
@@ -63,6 +63,6 @@ public class HomeController {
         String strDate2 = dtf2.format(LocalDateTime.now());
 
         dataCaliberMapper.add(strDate2, requirement_id, requirement_name, worker_name, extractor_name, department_name, requirement_desc, comments, sql);
-        return "redirect:/";
+        return "redirect:/requirements";
     }
 }

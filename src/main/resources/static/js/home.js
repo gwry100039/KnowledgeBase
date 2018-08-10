@@ -14,11 +14,33 @@ $(document).ready(function () {
         }
     });
 
+    //获取焦点后去掉红色提示边框
+    $('input[name], textarea[name]').focus(function(){
+        $(this).removeClass("error-input");
+    });
+
     //提交表单
     $('button.btn.btn-primary').click(function (e) {
         $('button.btn.btn-success').attr('disabled', true);
-        for (x in $('input[name]')) {
-            console.log(x);
+        var inputList = $('input[name], textarea[name]');
+        var isValid = true;
+        for (i = 0; i < inputList.size(); i++) {
+            // console.log(inputList[i].val());
+            var inputValue = $(inputList[i]).val();
+            if (inputValue === "") {
+                $(inputList[i]).addClass("error-input");
+                if(isValid){//滚动条滚到第一个错误的input那里
+                    $('html, body').animate({
+                        scrollTop: $("#data-caliber-form").offset().top - 200
+                    }, 200);
+                }
+                isValid = false;
+            }
+        }
+
+        if (!isValid) {
+            $('button.btn.btn-success').removeAttr('disabled');
+            return false;
         }
         $.post("/getSqlAnalyzeResult", {sql: $("#sql-textarea > textarea").val()}, function (result) {
             $('#data-caliber-form').submit();
@@ -32,7 +54,7 @@ $(document).ready(function () {
     //取消录入
     $('button.btn.btn-default').click(function (e) {
         $('#data-caliber-form').slideUp(function () {
-            $("#initial-input").css("display","block");
+            $("#initial-input").css("display", "block");
             $("#initial-input").animate({
                 "opacity": "1"
             }, 500);
@@ -43,9 +65,9 @@ $(document).ready(function () {
         $("#initial-input").animate({
             "opacity": "0"
         }, 500);
-        $("#initial-input").css("display","none");
+        $("#initial-input").css("display", "none");
         // $('#initial-input').parent().parent().hide(function () {
-            $('#data-caliber-form').slideDown();
+        $('#data-caliber-form').slideDown();
         // });
     });
 
