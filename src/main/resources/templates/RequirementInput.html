@@ -42,7 +42,8 @@
 
                 <div class="input-group">
                     <span class="input-group-addon">提数人员</span>
-                    <div class="bfh-selectbox" data-name="worker_name" data-filter="true" th:data-value="${workerList[0].name}">
+                    <div class="bfh-selectbox" data-name="worker_name" data-filter="true"
+                         th:data-value="${workerList[0].name}">
                         <div th:each="worker : ${workerList}" th:data-value="${worker.name}"
                              th:text="${worker.name}"></div>
                         <!--<div th:value="" data-value="苟瑞">苟瑞</div>
@@ -71,7 +72,8 @@
 
                 <div class="input-group">
                     <span class="input-group-addon">部门名称</span>
-                    <div class="bfh-selectbox" data-name="department_name" data-value="" data-filter="true" th:data-value="${orgList[0].name}">
+                    <div class="bfh-selectbox" data-name="department_name" data-value="" data-filter="true"
+                         th:data-value="${orgList[0].name}">
                         <div th:each="org : ${orgList}" th:data-value="${org.name}" th:text="${org.name}"></div>
                         <!--<div data-value="风险管理部">风险管理部</div>
                         <div data-value="个人业务部">个人业务部</div>
@@ -142,6 +144,8 @@
         </div>
 
         <div th:replace="footer :: footer"></div>
+
+        <script src="/js/requirement.js"></script>
 
     </div>
 

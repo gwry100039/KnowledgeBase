@@ -25,6 +25,14 @@ public class HomeController {
     @Autowired
     private WorkerMapper workerMapper;
 
+    @RequestMapping("/")
+    public String home(Model model) {
+//        model.addAttribute("orgList", orgMapper.selectList());
+//        model.addAttribute("workerList", workerMapper.selectList());
+//        model.addAttribute("dataCaliberList", dataCaliberMapper.selectList());
+        return "/Home";
+    }
+
     @RequestMapping("/requirements")
     public String requirementInput(Model model) {
         model.addAttribute("orgList", orgMapper.selectList());

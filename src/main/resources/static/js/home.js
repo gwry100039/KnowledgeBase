@@ -1,75 +1,86 @@
-$(document).ready(function () {
+var fields = [
+    'REQUIREMENT_DESC',
+    'comments'
+];
 
-    $("#sql-textarea > textarea").keypress(function (event) {
-        var key = event.which; //e.which是按键的值
-        var text = $(this).val();
-        if (key == 10 && event.ctrlKey) {//ctrl+enter
-            $('ul.list-group').remove();
-            $.post("/getSqlAnalyzeResult", {sql: text}, function (result) {
-                $('#sql-textarea').after(result);
-            }).error(function (result) {
-                console.log("SQL语法错误:" + result.responseJSON.message);
-                alert("SQL语法错误:" + result.responseJSON.message);
-            });
-        }
-    });
+var highlightPre = 'G20810910R20810910||';
+var highlightPost = '||G20810910R20810910';
 
-    //获取焦点后去掉红色提示边框
-    $('input[name], textarea[name]').focus(function(){
-        $(this).removeClass("error-input");
-    });
+function html_encode(str)
+{
+    var s = "";
+    if (str.length == 0) return "";
+    s = str.replace(/&/g, "&amp;");
+    s = s.replace(/</g, "&lt;");
+    s = s.replace(/>/g, "&gt;");
+    s = s.replace(/ /g, "&nbsp;");
+    s = s.replace(/\'/g, "&#39;");
+    s = s.replace(/\"/g, "&quot;");
+    s = s.replace(/\n/g, "<br/>");
+    return s;
+}
 
-    //提交表单
-    $('button.btn.btn-primary').click(function (e) {
-        $('button.btn.btn-success').attr('disabled', true);
-        var inputList = $('input[name], textarea[name]');
-        var isValid = true;
-        for (i = 0; i < inputList.size(); i++) {
-            // console.log(inputList[i].val());
-            var inputValue = $(inputList[i]).val();
-            if (inputValue === "") {
-                $(inputList[i]).addClass("error-input");
-                if(isValid){//滚动条滚到第一个错误的input那里
-                    $('html, body').animate({
-                        scrollTop: $("#data-caliber-form").offset().top - 200
-                    }, 200);
-                }
-                isValid = false;
+function on_data(data) {
+    $('#results').empty();
+
+    /*
+    [
+      {
+        "REQUIREMENT_DESC":"根据被嵌入内容的外部容器的宽度，自动创建一个固定的比例，从而让浏览器自动确定视频或 slideshow 的尺寸，能够在各种设备上缩放。\n\n这些规则被直接应用在 <iframe>、<embed>、<video> 和 <object> 元素上。如果你希望让最终样式与其他属性相匹配，还可以明确地使用一个派生出来的 .embed-responsive-item 类。\n\n超级提示： 不需要为 <iframe> 元素设置 frameborder=\"0\" 属性，因为我们已经替你这样做了！",
+        "comments":"啊实打实打算的s",
+        "id":"2018-07-26 14:12:34.024",
+        "_version_":1609485857122680832
+      }
+    ]
+     */
+    var docs = data.response.docs;
+    /*
+        "2018-07-26 14:12:34.024":{
+        "REQUIREMENT_DESC":["<em>根</em><em>据</em>被嵌入内容的外部容器的宽度，自动创建一个固定的比例，从而让浏览器自动确定视频或 slideshow 的尺寸，能够在各种设备上缩放。\n\n这些规则被直接应用在 <iframe>、<embed"]}
+     */
+    var highlighting = data.highlighting;
+
+    console.log(docs);
+
+    $.each(docs, function (i, item) {
+        var highlightObject = highlighting[item.id];
+
+        //获取高亮搜索结果的html，可能有多个
+        $.each(fields, function (i, item) {
+            if (highlightObject[item] != undefined) {
+                var html = highlightObject[item][0];
+                var finalHtml = html_encode(html).split(highlightPre).join("<em>").split(highlightPost).join("</em>");
+                console.log(finalHtml);
             }
-        }
-
-        if (!isValid) {
-            $('button.btn.btn-success').removeAttr('disabled');
-            return false;
-        }
-        $.post("/getSqlAnalyzeResult", {sql: $("#sql-textarea > textarea").val()}, function (result) {
-            $('#data-caliber-form').submit();
-        }).error(function (result) {
-            console.log("SQL语法错误:" + result.responseJSON.message);
-            alert("SQL语法错误:" + result.responseJSON.message);
-            $('button.btn.btn-success').removeAttr('disabled');
         });
     });
 
-    //取消录入
-    $('button.btn.btn-default').click(function (e) {
-        $('#data-caliber-form').slideUp(function () {
-            $("#initial-input").css("display", "block");
-            $("#initial-input").animate({
-                "opacity": "1"
-            }, 500);
-        });
+    var total = 'Found ' + docs.length + ' results';
+    $('#results').prepend('<div>' + total + '</div>');
+}
+
+function on_search() {
+    var query = $('#query').val();
+    if (query.length == 0) {
+        return;
+    }
+
+    var q = '';
+
+    $.each(fields, function (i, item) {
+        q += item + ':' + encodeURIComponent(query) + ' ';
     });
 
-    $('#initial-input').focus(function (e) {
-        $("#initial-input").animate({
-            "opacity": "0"
-        }, 500);
-        $("#initial-input").css("display", "none");
-        // $('#initial-input').parent().parent().hide(function () {
-        $('#data-caliber-form').slideDown();
-        // });
+    console.log(q);
+
+    var url = 'http://10.181.136.168:8983/solr/new_core/select?hl.fl=' + fields.join(',') + '&hl=on&q=' + q + '&wt=json&hl.simple.pre='+highlightPre+'&hl.simple.post='+highlightPost;
+    $.getJSON(url, on_data);
+}
+
+$(document).ready(function () {
+    $('body').keypress(function (e) {
+        if (e.keyCode == '13') {
+            on_search();
+        }
     });
-
-
 });

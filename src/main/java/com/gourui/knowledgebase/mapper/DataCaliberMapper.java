@@ -11,9 +11,9 @@ import java.util.List;
 
 @Mapper
 public interface DataCaliberMapper {
-    @Insert("INSERT INTO data_caliber(uuid,requirement_id,requirement_name,worker_name,extractor_name,department_name,requirement_desc,comments,sql) " +
-            "VALUES(#{uuid},#{requirement_id},#{requirement_name},#{worker_name},#{extractor_name},#{department_name},#{requirement_desc},#{comments},#{sql})")
-    int add(@Param("uuid")String uuid,
+    @Insert("INSERT INTO data_caliber(id,requirement_id,requirement_name,worker_name,extractor_name,department_name,requirement_desc,comments,sql) " +
+            "VALUES(#{id},#{requirement_id},#{requirement_name},#{worker_name},#{extractor_name},#{department_name},#{requirement_desc},#{comments},#{sql})")
+    int add(@Param("id")String id,
             @Param("requirement_id")String requirement_id,
             @Param("requirement_name")String requirement_name,
             @Param("worker_name")String worker_name,
@@ -23,7 +23,7 @@ public interface DataCaliberMapper {
             @Param("comments")String comments,
             @Param("sql")String sql);
 
-    @Select("select uuid," +
+    @Select("select id," +
             "requirement_id as requirementId," +
             "requirement_name as requirementName," +
             "worker_name workerName," +
