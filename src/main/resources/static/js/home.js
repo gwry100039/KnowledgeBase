@@ -1,6 +1,7 @@
 var fields = [
     'REQUIREMENT_DESC',
-    'comments'
+    'comments',
+
 ];
 
 var highlightPre = 'G20810910R20810910||';
@@ -45,12 +46,13 @@ function on_data(data) {
     $.each(docs, function (i, item) {
         var highlightObject = highlighting[item.id];
 
-        //获取高亮搜索结果的html，可能有多个
+        //获取高亮搜索结果的html，可能有多个，且对顺序敏感
         $.each(fields, function (i, item) {
             if (highlightObject[item] != undefined) {
                 var html = highlightObject[item][0];
                 var finalHtml = html_encode(html).split(highlightPre).join("<em>").split(highlightPost).join("</em>");
                 console.log(finalHtml);
+                $('#search-result').append('<div>' + finalHtml + '</div>');
             }
         });
     });
