@@ -3,8 +3,13 @@ package com.gourui.knowledgebase.controller;
 import com.gourui.knowledgebase.mapper.DataCaliberMapper;
 import com.gourui.knowledgebase.mapper.OrgMapper;
 import com.gourui.knowledgebase.mapper.WorkerMapper;
+import com.gourui.knowledgebase.solr.model.DataCaliber;
+import com.gourui.knowledgebase.solr.service.SolrSearchService;
 import com.gourui.knowledgebase.utils.sqlparser.OracleSqlParser;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.solr.core.query.result.HighlightEntry;
+import org.springframework.data.solr.core.query.result.HighlightPage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -25,11 +31,12 @@ public class HomeController {
     @Autowired
     private WorkerMapper workerMapper;
 
+    @Autowired
+    private SolrSearchService sss;
+
     @RequestMapping("/")
     public String home(Model model) {
-//        model.addAttribute("orgList", orgMapper.selectList());
-//        model.addAttribute("workerList", workerMapper.selectList());
-//        model.addAttribute("dataCaliberList", dataCaliberMapper.selectList());
+        List<DataCaliber> list = sss.getHighlightedResults("我根据");
         return "/Home";
     }
 

@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class DataCaliber implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String uuid;
+    private String id;
 
     private String requirementId;
 
@@ -24,12 +24,12 @@ public class DataCaliber implements Serializable {
 
     private String sql;
 
-    public String getUuid() {
-        return uuid;
+    public String getId() {
+        return id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getRequirementId() {
